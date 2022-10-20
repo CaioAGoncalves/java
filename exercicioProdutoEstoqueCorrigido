@@ -1,0 +1,69 @@
+//Principal
+
+import java.util.Scanner;
+
+public class Principal {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        //obtém a quantidade de produtos que o usuário deseja informar
+        System.out.println("Quantidade de produtos: ");
+        int quantidadeDeProdutos = scanner.nextInt();
+        
+        //Precisamos dessa linha extra para garantir que uma nova linha seja lida, pois nextInt não lê uma nova linha,
+        //mas apenas um número. Fica feio, mas tente não coloca-la para ver o que acontece.
+        scanner.nextLine();   //<--- isso aki, colocar sempre dps do nextInt
+        
+        //instancia um objeto da classe Estoque
+        Estoque estoque = new Estoque();
+        
+        //instancia um array de produtos com a quantidade de posições que o usuário informou
+        estoque.produtos = new Produto[quantidadeDeProdutos];
+        
+        //percorre todas as posições na array (que estão nulas) e preenche uma com a entrada do teclado do usuário
+        for (int i = 0; i < estoque.produtos.length; i++){
+            estoque.produtos[i] = new Produto();
+
+            System.out.println("\nProduto " + i);
+            System.out.println("---------------------");
+            
+            System.out.println("Informe descrição: ");
+            estoque.produtos[i].descricao = scanner.nextLine();
+
+            System.out.println("Informe a quantidade de itens: ");
+            estoque.produtos[i].quantidade = scanner.nextInt();
+            scanner.nextLine();
+            
+        }
+        
+        estoque.listarProdutos();
+    }
+}
+--------------------------------------------------------------outra Classe----------------------------------------------------------------------
+//Produto
+
+public class Produto {
+
+    String descricao;
+    int quantidade;
+
+    void descrever(){
+        System.out.println(descricao + " - " + quantidade + " itens");
+    }
+}
+--------------------------------------------------------------outra Classe----------------------------------------------------------------------
+// Estoque
+
+public class Estoque {
+
+    Produto[] produtos; // <------ isso é uma Array
+
+    void listarProdutos(){
+        System.out.println("\nProdutos em estoque");
+        System.out.println("---------------------");
+
+        for (int i = 0; i < produtos.length; i++){
+            produtos[i].descrever();
+        }
+    }
+}
