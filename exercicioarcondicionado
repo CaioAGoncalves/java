@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+public class Principal {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ArCondicionado arC = new ArCondicionado(23, 17, 25);
+
+        System.out.print("Trocar temperatura? \n1/S \n2/N \nSua escolha: ");
+        arC.trocarParaNovaTemperatura = scanner.nextInt();
+        scanner.nextLine();
+
+
+
+       if (arC.quererOuNaoTrocarTemperatura()){
+           System.out.println("Temperatura atual é de: " + arC.temperaturaAtual);
+           System.out.print("Trocar para a temperatura: ");
+           arC.trocarTemperatura = scanner.nextInt();
+           scanner.nextLine();
+           if (arC.erroTroca()){
+               System.err.println("Temperatura máximxa = " + arC.temperaturaMaxima);
+               System.err.println("Temperatura Mínima = " + arC.temperaturaMinima);
+           }
+           arC.temperaturaAtual = arC.trocarTemperatura;
+
+       }
+
+        }
+    }
+
+---------------------------------outra classe-----------------------------------------
+public class ArCondicionado {
+
+    int temperaturaAtual = 23;
+    int trocarTemperatura;
+    int novaTemperatura;
+    int trocarParaNovaTemperatura;
+    int temperaturaMinima;
+    int temperaturaMaxima;
+
+    public ArCondicionado(int temperaturaAtual) {
+        this.temperaturaAtual = temperaturaAtual;
+
+    }
+
+    public ArCondicionado(int temperaturaAtual, int temperaturaMinima, int temperaturaMaxima) {
+        this(temperaturaAtual);
+        this.temperaturaMinima = temperaturaMinima;
+        this.temperaturaMaxima = temperaturaMaxima;
+    }
+
+    public boolean quererOuNaoTrocarTemperatura(){
+        Boolean trocandoTemperatura = trocarParaNovaTemperatura == 1;
+
+         return trocandoTemperatura;
+     }
+     public boolean erroTroca(){
+        Boolean erroTroca1 = trocarTemperatura < 17;
+        Boolean erroTroca2 = trocarTemperatura > 25;
+        return  true;
+     }
+}
