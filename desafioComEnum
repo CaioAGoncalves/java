@@ -1,0 +1,117 @@
+public class Principal {
+    public static void main(String[] args) {
+        Fornecedor imobiliaria = new Fornecedor();
+        imobiliaria.setNome("Casa & Cia Negócios Imobiliários");
+
+        Fornecedor mercado = new Fornecedor();
+        mercado.setNome("Mercado do João");
+
+        ContaPagar conta1 = new ContaPagar();
+        conta1.setDescricao("Aluguel da matriz");
+        conta1.setValor(1230d);
+        conta1.setDataVencimento("10/05/2012");
+        conta1.setFornecedor(imobiliaria);
+
+        ContaPagar conta2 = new ContaPagar(mercado, "Compras do mês", 390d, "19/05/2012");
+
+        ContaPagar conta3 = new ContaPagar(mercado, "Aluguel da filial", 700d, "11/05/2012");
+
+        // pagamento de conta pendente (ok, deve funcionar)
+        conta1.pagar();
+
+        // tentativa de pagar uma conta cancelada (não deve aceitar pagamento)
+        conta2.cancelar();
+        conta2.pagar();
+
+        // tentativa de pagar uma conta duas vezes (não deve aceitar na segunda vez)
+        conta3.pagar();
+        conta3.pagar();
+    }
+
+}
+-----------------------------outra classe----------------------------------
+public class ContaPagar {
+    private String descricao;
+    private String dataDeVencimento;
+    private Double valor;
+    private Fornecedor fornecedor;
+    private SituacaoConta situacaoConta;
+
+    public ContaPagar() {
+        this.situacaoConta = SituacaoConta.PENDENTE;
+    }
+
+    public ContaPagar(Fornecedor fornecedor, String descricao, double valor, String dataDeVencimento) {
+        this();
+        this.fornecedor = fornecedor;
+        this.valor = valor;
+        this.dataDeVencimento = dataDeVencimento;
+        this.descricao = descricao;
+
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public SituacaoConta getSituacaoConta() {
+        return situacaoConta;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setDataVencimento(String dataDeVencimento) {
+        this.dataDeVencimento = dataDeVencimento;
+    }
+
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public void pagar(){
+        if (SituacaoConta.PAGA.equals(this.getSituacaoConta())){
+            System.out.println("Não pode pagar uma conta que já está paga: " + this.getDescricao() + ".");
+        } else if (SituacaoConta.CANCELADA.equals((this.situacaoConta))){
+            System.out.println("Não pode pagar uma conta que está cancelada: " + this.getDescricao());
+        } else {
+            System.out.println("Pagando conta " + this.getDescricao() + "no valor de " + this.getValor() +
+                    "e vencimento em " + this.dataDeVencimento + " do fornecedor " + this.getFornecedor().getNome() + ".");
+            this.situacaoConta = SituacaoConta.PAGA;
+        }
+
+    }
+    public void cancelar(){
+        if (SituacaoConta.PAGA.equals(this.getSituacaoConta())){
+            System.out.println("Não pode pagar uma conta que já está paga: " + this.getDescricao() + ".");
+        } else if (SituacaoConta.CANCELADA.equals((this.situacaoConta))){
+            System.out.println("Não pode pagar uma conta que está cancelada: " + this.getDescricao());
+        } else {
+            System.out.println("Cancelando conta " + this.getDescricao() + ".");
+            this.situacaoConta = SituacaoConta.CANCELADA;
+        }
+
+    }
+
+}
+-----------------------------------outra classe (Enum)--------------------------------------------
+public enum SituacaoConta {
+    PENDENTE,
+    PAGA,
+    CANCELADA
+
+}
